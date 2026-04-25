@@ -3,58 +3,60 @@ package org.oji.shgl.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.math.BigDecimal;
 import java.time.Instant;
 
-@Entity(name = "companies")
-@Getter @Setter
+@Getter
+@Setter
+@Entity
+@Table(name = "companies")
 public class Company {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID",nullable = false)
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "NAME",nullable = false,unique = true)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "LOGO", length = 500)
+    @Column(name = "logo", length = 500)
     private String logo;
 
-    @Column(name = "INDUSTRY", nullable = false, length = 100)
+    @Column(name = "industry", nullable = false, length = 100)
     private String industry;
 
-    @Column(name = "SIZE", nullable = false, length = 50)
+    @Column(name = "size", nullable = false, length = 50)
     private String size;
 
-    @Column(name = "RATING", nullable = false, precision = 3, scale = 2)
+    @Column(name = "rating", nullable = false, precision = 3, scale = 2)
     private BigDecimal rating;
 
-    @Column(name = "LOCATIONS", length = 1000)
+    @Column(name = "locations", length = 1000)
     private String locations;
 
-    @Column(name = "FOUNDED", nullable = false)
+    @Column(name = "founded", nullable = false)
     private Integer founded;
 
     @Lob
-    @Column(name = "DESCRIPTION")
+    @Column(name = "description")
     private String description;
 
-    @Column(name = "EMPLOYEES")
+    @Column(name = "employees")
     private Integer employees;
 
-    @Column(name = "WEBSITE", length = 500)
+    @Column(name = "website", length = 500)
     private String website;
 
-    @Column(name = "CREATED_AT", nullable = false)
+    @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
-    @Column(name = "CREATED_BY", nullable = false, length = 20)
+    @Column(name = "created_by", nullable = false, length = 20)
     private String createdBy;
 
-    @Column(name = "UPDATED_AT")
+    @Column(name = "updated_at")
     private Instant updatedAt;
 
-    @Column(name = "UPDATED_BY", length = 20)
+    @Column(name = "updated_by", length = 20)
     private String updatedBy;
 }

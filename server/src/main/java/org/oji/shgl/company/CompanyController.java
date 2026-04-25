@@ -1,8 +1,8 @@
 package org.oji.shgl.company;
 
 import lombok.RequiredArgsConstructor;
-import org.oji.shgl.dto.CompanyDto;
-import org.oji.shgl.service.CompanyService;
+import org.oji.shgl.company.service.ICompanyService;
+import org.oji.shgl.dto.CompanyResponseDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CompanyController {
 
-    private final CompanyService companyService;
+    private final ICompanyService companyService;
 //we will use lombok to generate this constructor for us since it's boilerplate code
 //    @Autowired
 //    public CompanyController(CompanyService companyService){
@@ -23,7 +23,7 @@ public class CompanyController {
 //    }
 
     @GetMapping(version = "1.0")
-    public ResponseEntity<List<CompanyDto>> getAllCompanies(){
+    public ResponseEntity<List<CompanyResponseDto>> getAllCompanies(){
         return ResponseEntity.ok().body(companyService.getAllCompanies());
     }
 }
