@@ -1,9 +1,12 @@
 package org.oji.shgl.company;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.oji.shgl.company.service.ICompanyService;
 import org.oji.shgl.dto.CompanyResponseDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +26,7 @@ public class CompanyController {
 //    }
 
     @GetMapping(version = "1.0")
-    public ResponseEntity<List<CompanyResponseDto>> getAllCompanies(){
+    public ResponseEntity<List<CompanyResponseDto>> getAllCompanies(@RequestParam @NotBlank String mo){
         return ResponseEntity.ok().body(companyService.getAllCompanies());
     }
 }

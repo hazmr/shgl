@@ -8,6 +8,7 @@ import org.oji.shgl.repository.CompanyRepository;
 import org.oji.shgl.company.service.ICompanyService;
 import org.springframework.stereotype.Service;
 
+import java.io.InvalidClassException;
 import java.util.List;
 
 @Service
@@ -24,6 +25,7 @@ public class CompanyService implements ICompanyService {
         List<Company> companies = companyRepository.findAll();
         // -> map(this::transformData) // manual mapping
         // -> -> map(i -> CompanyMapper.INSTANCE.toCompanyDto(i)) // automapping
+//        throw new NullPointerException("wtf is this bro");
         return companies.stream().map(companyMapper::toDto).toList();
     }
 

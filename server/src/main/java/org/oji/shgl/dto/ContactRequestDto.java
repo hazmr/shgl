@@ -1,5 +1,23 @@
 package org.oji.shgl.dto;
 
 
-public record ContactRequestDto(String email, String message, String name, String subject, String userType) {
-}
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
+public record ContactRequestDto(
+        @Email
+        @NotBlank
+        String email,
+
+        @NotBlank
+        String message,
+
+        @NotBlank
+        String name,
+
+        @NotBlank
+        String subject,
+
+        @NotBlank
+        String userType
+){}

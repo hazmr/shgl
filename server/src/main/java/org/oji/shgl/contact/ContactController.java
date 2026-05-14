@@ -1,5 +1,6 @@
 package org.oji.shgl.contact;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.oji.shgl.contact.service.impl.ContactService;
 import org.oji.shgl.dto.ContactRequestDto;
@@ -16,7 +17,7 @@ public class ContactController {
     private final ContactService contactService;
 
     @PostMapping(version = "1.0")
-    public ResponseEntity<String> saveContact(@RequestBody ContactRequestDto contactRequestDto) {
+    public ResponseEntity<String> saveContact(@RequestBody @Valid ContactRequestDto contactRequestDto) {
         String result = contactService.saveContact(contactRequestDto);
         return ResponseEntity.ok(result);
     }
