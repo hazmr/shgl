@@ -20,10 +20,6 @@ public class ContactService implements IContactService
     public String saveContact(ContactRequestDto contactRequestDto)
     {
         Contact contact = contactMapper.toEntity(contactRequestDto);
-        contact.setStatus("unread");
-        contact.setCreatedBy("system");
-        contact.setCreatedAt(Instant.now());
-        contact.setUpdatedAt(Instant.now());
         contactRepository.save(contact);
         if(contact.getId() != null)
             return "Message sent successfully";

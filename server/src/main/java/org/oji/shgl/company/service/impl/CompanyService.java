@@ -1,5 +1,6 @@
 package org.oji.shgl.company.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.oji.shgl.dto.CompanyResponseDto;
 import org.oji.shgl.entity.Company;
@@ -20,7 +21,7 @@ public class CompanyService implements ICompanyService {
 //    public CompanyServiceImpl(CompanyRepository companyRepository){
 //        this.companyRepository = companyRepository;
 //    }
-
+    @Transactional
     public List<CompanyResponseDto> getAllCompanies(){
         List<Company> companies = companyRepository.findAll();
         // -> map(this::transformData) // manual mapping

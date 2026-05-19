@@ -26,7 +26,7 @@ public class CompanyController {
 //    }
 
     @GetMapping(version = "1.0")
-    public ResponseEntity<List<CompanyResponseDto>> getAllCompanies(@RequestParam @NotBlank String mo){
+    public ResponseEntity<List<CompanyResponseDto>> getAllCompanies(){
         return ResponseEntity.ok().body(companyService.getAllCompanies());
     }
 }
