@@ -1,8 +1,40 @@
-"use client";
-
 import { useMemo, useState } from "react";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { useJobsData } from "../contexts/JobsDataContext";
+import CornerAccents from "./CornerAccents";
+
+const Sparkline = ({ seed = "tech", width = 70, height = 18 }) => {
+  const points = [];
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = seed.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const count = 5;
+  for (let i = 0; i < count; i++) {
+    const x = (i / (count - 1)) * width;
+    const val = Math.abs((hash >> (i * 2.5)) % (height - 6)) + 3;
+    points.push(`${x},${height - val}`);
+  }
+  const pathD = `M ${points.join(" L ")}`;
+  return (
+    <svg width={width} height={height} className="overflow-visible opacity-55 text-fg">
+      <path
+        d={pathD}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle
+        cx={width}
+        cy={points[points.length - 1].split(",")[1]}
+        r="1.5"
+        className="fill-current animate-pulse text-fg"
+      />
+    </svg>
+  );
+};
 
 const CATEGORIES = [
   "All",
@@ -129,15 +161,18 @@ const JobsSection = () => {
     return (
       <section className="px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
         <div className="mx-auto max-w-7xl">
-          <div className="rounded-[40px] border border-[#BFBFBF]/50 dark:border-[#404040]/70 bg-[#BFBFBF]/20 dark:bg-[#404040]/30 p-6 sm:p-8 lg:p-10">
-            <div className="h-4 w-40 rounded-full bg-[#BFBFBF]/60 dark:bg-[#404040]/70 animate-pulse" />
-            <div className="mt-5 h-10 w-full max-w-xl rounded-2xl bg-[#BFBFBF]/50 dark:bg-[#404040]/60 animate-pulse" />
+          <div className="border border-[#0A0A0B]/10 dark:border-[#ECECEC]/10 bg-[#FFFFFF] dark:bg-[#18181B] p-6 sm:p-8 lg:p-10 relative">
+            <CornerAccents className="opacity-50" />
+            <div className="h-4 w-40 bg-[#0A0A0B]/10 dark:bg-[#ECECEC]/10 animate-pulse font-mono text-[10px]" />
+            <div className="mt-5 h-10 w-full max-w-xl bg-[#0A0A0B]/10 dark:bg-[#ECECEC]/10 animate-pulse" />
             <div className="mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {Array.from({ length: 6 }).map((_, idx) => (
                 <div
                   key={idx}
-                  className="h-64 rounded-3xl bg-[#F2F2F2]/70 dark:bg-[#0D0D0D]/60 border border-[#BFBFBF]/45 dark:border-[#404040]/65 animate-pulse"
-                />
+                  className="h-64 bg-[#0A0A0B]/5 dark:bg-[#ECECEC]/5 border border-[#0A0A0B]/10 dark:border-[#ECECEC]/10 animate-pulse relative"
+                >
+                  <CornerAccents className="opacity-25" />
+                </div>
               ))}
             </div>
           </div>
@@ -148,25 +183,26 @@ const JobsSection = () => {
 
   return (
     <section className="px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
-      <div className="relative mx-auto max-w-7xl rounded-[40px] border border-[#BFBFBF]/50 dark:border-[#404040]/70 bg-[#BFBFBF]/20 dark:bg-[#404040]/30 p-6 sm:p-8 lg:p-10 shadow-sm">
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden rounded-[40px]">
-          <div className="absolute -top-20 right-6 h-48 w-48 rounded-full bg-[#8C8C8C]/20 blur-3xl" />
-          <div className="absolute -bottom-10 left-10 h-44 w-44 rounded-full bg-[#0D0D0D]/10 dark:bg-[#F2F2F2]/5 blur-3xl" />
-        </div>
+      <div className="relative mx-auto max-w-7xl border border-[#0A0A0B]/10 dark:border-[#ECECEC]/10 bg-[#FFFFFF] dark:bg-[#18181B] p-6 sm:p-8 lg:p-10 transition-all duration-300 group">
+        <CornerAccents className="text-fg/30 group-hover:text-fg/50" />
+        
+        {/* Decorative Grid Overlay */}
+        <div className="absolute inset-0 grid-bg opacity-15 pointer-events-none" />
 
-        <div className="relative">
+        <div className="relative z-10">
           <div className="max-w-3xl">
-            <p className="inline-flex items-center rounded-full border border-[#BFBFBF]/70 dark:border-[#404040]/80 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.15em] text-[#8C8C8C]">
-              Section / Jobs
+            <p className="inline-flex items-center border border-[#0A0A0B]/10 dark:border-[#ECECEC]/10 px-4 py-1.5 text-[10px] font-bold font-mono uppercase tracking-[0.15em] text-[#5C5C5E] dark:text-[#8C8C8E] bg-[#0A0A0B]/5 dark:bg-[#ECECEC]/5">
+              // Active Listings
             </p>
-            <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight leading-[1.12] text-[#0D0D0D] dark:text-[#F2F2F2]">
-              Latest Tech Roles.
+            <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.12] text-[#0A0A0B] dark:text-[#ECECEC] font-sans uppercase">
+              Browse open roles.
             </h2>
-            <p className="mt-4 text-base sm:text-lg leading-relaxed text-[#404040] dark:text-[#BFBFBF]">
-              Browse current technology openings and focus on work that matches your track.
+            <p className="mt-4 text-xs sm:text-sm font-mono text-[#5C5C5E] dark:text-[#8C8C8E] leading-relaxed">
+              Discover verified engineering, data, and product roles currently open across Europe, the Middle East, and Africa.
             </p>
           </div>
 
+          {/* Categories Grid */}
           <div className="mt-8 flex flex-wrap gap-2">
             {CATEGORIES.map((category) => {
               const active = activeCategory === category;
@@ -175,24 +211,26 @@ const JobsSection = () => {
                   key={category}
                   onClick={() => setActiveCategory(category)}
                   className={[
-                    "inline-flex min-h-11 items-center rounded-full px-5 text-sm font-medium tracking-wide active:scale-95 transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0D0D0D] dark:focus-visible:ring-[#F2F2F2]",
+                    "relative inline-flex min-h-10 items-center justify-center border px-5 font-mono text-xs uppercase tracking-wider font-bold transition-all duration-300 group/catbtn cursor-pointer",
                     active
-                      ? "bg-[#0D0D0D] text-[#F2F2F2] dark:bg-[#F2F2F2] dark:text-[#0D0D0D] shadow-sm"
-                      : "bg-[#F2F2F2]/75 dark:bg-[#0D0D0D]/60 border border-[#BFBFBF]/70 dark:border-[#404040]/80 text-[#404040] dark:text-[#BFBFBF] hover:bg-[#0D0D0D]/10 dark:hover:bg-[#F2F2F2]/10",
+                      ? "border-[#0A0A0B] dark:border-[#ECECEC] bg-[#0A0A0B] text-[#ECECEC] dark:bg-[#ECECEC] dark:text-[#0A0A0B]"
+                      : "border-[#0A0A0B]/15 dark:border-[#ECECEC]/15 bg-transparent text-[#5C5C5E] dark:text-[#8C8C8E] hover:border-fg hover:text-fg",
                   ].join(" ")}
                 >
+                  <CornerAccents className="opacity-0 group-hover/catbtn:opacity-100" />
                   {category}
                 </button>
               );
             })}
           </div>
 
-          <div className="mt-7 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div className="text-sm text-[#404040] dark:text-[#BFBFBF]">
-              Showing <span className="font-semibold text-[#0D0D0D] dark:text-[#F2F2F2]">{displayedJobs.length}</span> of {" "}
-              <span className="font-semibold text-[#0D0D0D] dark:text-[#F2F2F2]">{filteredJobs.length}</span> roles
+          <div className="mt-7 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between border-t border-[#0A0A0B]/10 dark:border-[#ECECEC]/10 pt-6">
+            <div className="text-xs font-mono text-[#5C5C5E] dark:text-[#8C8C8E]">
+              SHOWING <span className="font-bold text-[#0A0A0B] dark:text-[#ECECEC]">{displayedJobs.length}</span> OF {" "}
+              <span className="font-bold text-[#0A0A0B] dark:text-[#ECECEC]">{filteredJobs.length}</span> ACTIVE RECORDS
             </div>
 
+            {/* Filters Selection */}
             <div className="flex flex-wrap gap-2">
               {FILTERS.map((filter) => {
                 const active = activeFilter === filter;
@@ -201,12 +239,13 @@ const JobsSection = () => {
                     key={filter}
                     onClick={() => setActiveFilter(filter)}
                     className={[
-                      "inline-flex min-h-11 items-center rounded-full px-5 text-sm font-medium tracking-wide active:scale-95 transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0D0D0D] dark:focus-visible:ring-[#F2F2F2]",
+                      "relative inline-flex min-h-9 items-center justify-center border px-4 font-mono text-[10px] uppercase tracking-wider font-bold transition-all duration-300 group/filtbtn cursor-pointer",
                       active
-                        ? "bg-[#BFBFBF]/70 dark:bg-[#404040]/90 text-[#0D0D0D] dark:text-[#F2F2F2]"
-                        : "bg-[#F2F2F2]/70 dark:bg-[#0D0D0D]/60 border border-[#BFBFBF]/70 dark:border-[#404040]/80 text-[#404040] dark:text-[#BFBFBF] hover:bg-[#0D0D0D]/10 dark:hover:bg-[#F2F2F2]/10",
+                        ? "border-[#0A0A0B]/40 dark:border-[#ECECEC]/40 bg-[#0A0A0B]/10 dark:bg-[#ECECEC]/10 text-fg"
+                        : "border-[#0A0A0B]/15 dark:border-[#ECECEC]/15 bg-transparent text-[#5C5C5E] dark:text-[#8C8C8E] hover:border-fg hover:text-fg",
                     ].join(" ")}
                   >
+                    <CornerAccents className="opacity-0 group-hover/filtbtn:opacity-100" />
                     {filter}
                   </button>
                 );
@@ -214,89 +253,102 @@ const JobsSection = () => {
             </div>
           </div>
 
+          {/* Jobs Listing */}
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {displayedJobs.length === 0 && (
-              <div className="md:col-span-2 xl:col-span-3 rounded-3xl border border-[#BFBFBF]/60 dark:border-[#404040]/70 bg-[#F2F2F2]/80 dark:bg-[#0D0D0D]/60 p-8 text-center">
-                <p className="text-lg font-medium text-[#0D0D0D] dark:text-[#F2F2F2]">No matching jobs found.</p>
-                <p className="mt-2 text-sm text-[#8C8C8C]">Try another category or filter combination.</p>
+              <div className="md:col-span-2 xl:col-span-3 border border-[#0A0A0B]/15 dark:border-[#ECECEC]/15 bg-[#0A0A0B]/5 dark:bg-[#ECECEC]/5 p-8 text-center relative group">
+                <CornerAccents className="opacity-50" />
+                <p className="font-mono text-sm font-bold text-fg uppercase">No matching jobs found.</p>
+                <p className="mt-2 font-mono text-xs text-[#8C8C8E]">Try another category or filter combination.</p>
               </div>
             )}
 
             {displayedJobs.map((job) => (
               <Link
                 key={job.id}
-                href={`/jobs/${job.id}`}
-                className="group rounded-3xl border border-[#BFBFBF]/60 dark:border-[#404040]/70 bg-[#F2F2F2]/80 dark:bg-white/5 p-6 shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-[0.99] backdrop-blur-sm transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0D0D0D] dark:focus-visible:ring-[#F2F2F2]"
+                to={`/jobs/${job.id}`}
+                className="group/card relative flex flex-col justify-between border border-[#0A0A0B]/15 dark:border-[#ECECEC]/15 bg-[#FFFFFF] dark:bg-[#18181B] p-6 hover:border-fg transition-all duration-300"
               >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex items-start gap-3 min-w-0">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-[#BFBFBF]/45 dark:bg-[#404040]/75">
-                      {job.companyLogo ? (
-                        <>
-                          <img
-                            src={resolveLogo(job.companyLogo)}
-                            alt={`${job.company} logo`}
-                            className="h-full w-full object-cover"
-                            onError={(e) => {
-                              e.currentTarget.style.display = "none";
-                              e.currentTarget.nextSibling.style.display = "flex";
-                            }}
-                          />
-                          <span className="hidden h-full w-full items-center justify-center text-sm font-semibold text-[#0D0D0D] dark:text-[#F2F2F2]">
+                <CornerAccents className="opacity-0 group-hover/card:opacity-100" />
+                
+                <div>
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-start gap-3 min-w-0">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden border border-[#0A0A0B]/10 dark:border-[#ECECEC]/10 bg-[#0A0A0B]/5 dark:bg-[#ECECEC]/5 text-fg">
+                        {job.companyLogo ? (
+                          <>
+                            <img
+                              src={resolveLogo(job.companyLogo)}
+                              alt={`${job.company} logo`}
+                              className="h-full w-full object-cover"
+                              onError={(e) => {
+                                e.currentTarget.style.display = "none";
+                                e.currentTarget.nextSibling.style.display = "flex";
+                              }}
+                            />
+                            <span className="hidden h-full w-full items-center justify-center text-xs font-bold font-mono">
+                              {getCompanyMonogram(job.company || "Tech")}
+                            </span>
+                          </>
+                        ) : (
+                          <span className="flex h-full w-full items-center justify-center text-xs font-bold font-mono">
                             {getCompanyMonogram(job.company || "Tech")}
                           </span>
-                        </>
-                      ) : (
-                        <span className="flex h-full w-full items-center justify-center text-sm font-semibold text-[#0D0D0D] dark:text-[#F2F2F2]">
-                          {getCompanyMonogram(job.company || "Tech")}
-                        </span>
-                      )}
+                        )}
+                      </div>
+                      <div className="min-w-0">
+                        <h3 className="truncate text-sm font-bold font-mono text-fg uppercase tracking-tight group-hover/card:text-[#5C5C5E] dark:group-hover/card:text-[#8C8C8E] transition-colors duration-300">
+                          {job.title}
+                        </h3>
+                        <p className="mt-1 truncate font-mono text-xs text-[#5C5C5E] dark:text-[#8C8C8E]">{job.company}</p>
+                      </div>
                     </div>
-                    <div className="min-w-0">
-                      <h3 className="truncate text-lg font-semibold text-[#0D0D0D] dark:text-[#F2F2F2]">
-                        {job.title}
-                      </h3>
-                      <p className="mt-1 truncate text-sm text-[#404040] dark:text-[#BFBFBF]">{job.company}</p>
-                    </div>
+
+                    {job.remote && (
+                      <span className="inline-flex h-6 items-center border border-[#0A0A0B]/10 dark:border-[#ECECEC]/10 bg-[#0A0A0B]/5 dark:bg-[#ECECEC]/5 px-2.5 font-mono text-[9px] uppercase tracking-wider font-bold text-fg">
+                        REMOTE
+                      </span>
+                    )}
                   </div>
 
-                  {job.remote && (
-                    <span className="inline-flex h-8 items-center rounded-full bg-[#0D0D0D]/10 dark:bg-[#F2F2F2]/10 px-3 text-xs font-medium text-[#404040] dark:text-[#BFBFBF]">
-                      Remote
+                  <div className="mt-5 flex flex-wrap items-center gap-2 font-mono text-[10px] text-[#8C8C8E]">
+                    <span>{job.location || "Location N/A"}</span>
+                    <span aria-hidden className="opacity-40">//</span>
+                    <span>{job.jobType || "Full-time"}</span>
+                    <span aria-hidden className="opacity-40">//</span>
+                    <span>{job.workType || "Hybrid"}</span>
+                  </div>
+
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    <span className="inline-flex items-center border border-[#0A0A0B]/10 dark:border-[#ECECEC]/10 bg-[#0A0A0B]/5 dark:bg-[#ECECEC]/5 px-2.5 py-1 font-mono text-[10px] font-bold text-fg">
+                      {getTechTrack(job)}
                     </span>
-                  )}
+                    {(job.requirements || []).slice(0, 2).map((skill) => (
+                      <span
+                        key={skill}
+                        className="inline-flex items-center border border-[#0A0A0B]/10 dark:border-[#ECECEC]/10 px-2.5 py-1 font-mono text-[10px] text-[#8C8C8E]"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                  
+                  {/* Micro-sparkline telemetry chart */}
+                  <div className="mt-5 flex items-center justify-between border-t border-[#0A0A0B]/10 dark:border-[#ECECEC]/10 pt-4 pb-0.5">
+                    <span className="text-[7px] font-mono font-bold tracking-wider text-[#8C8C8E] uppercase">Application Velocity</span>
+                    <Sparkline seed={job.title + job.id} width={65} height={14} />
+                  </div>
                 </div>
 
-                <div className="mt-5 flex flex-wrap items-center gap-2 text-xs text-[#8C8C8C]">
-                  <span>{job.location || "Location N/A"}</span>
-                  <span aria-hidden>•</span>
-                  <span>{job.jobType || "Full-time"}</span>
-                  <span aria-hidden>•</span>
-                  <span>{job.workType || "Hybrid"}</span>
-                </div>
-
-                <div className="mt-5 flex flex-wrap gap-2">
-                  <span className="inline-flex items-center rounded-full bg-[#BFBFBF]/40 dark:bg-[#404040]/70 px-3 py-1 text-xs font-medium text-[#404040] dark:text-[#BFBFBF]">
-                    {getTechTrack(job)}
-                  </span>
-                  {(job.requirements || []).slice(0, 2).map((skill) => (
-                    <span
-                      key={skill}
-                      className="inline-flex items-center rounded-full border border-[#BFBFBF]/70 dark:border-[#404040]/80 px-3 py-1 text-xs text-[#8C8C8C]"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="mt-6 flex items-end justify-between gap-3 border-t border-[#BFBFBF]/60 dark:border-[#404040]/80 pt-5">
-                  <div className="text-base font-semibold text-[#0D0D0D] dark:text-[#F2F2F2]">
+                <div className="mt-4 flex items-end justify-between gap-3 border-t border-[#0A0A0B]/10 dark:border-[#ECECEC]/10 pt-4">
+                  <div className="font-mono text-sm font-bold text-fg">
                     {formatSalary(job.salary?.min, job.salary?.max)}
                   </div>
                   <div className="text-right">
-                    <p className="text-xs text-[#8C8C8C]">{getTimeAgo(job.postedDate)}</p>
-                    <p className="mt-1 text-sm font-medium text-[#404040] dark:text-[#BFBFBF] transition-transform duration-300 group-hover:translate-x-0.5">
-                      View Role →
+                    <p className="font-mono text-[10px] text-[#8C8C8E]">{getTimeAgo(job.postedDate)}</p>
+                    <p className="mt-1 font-mono text-xs font-bold text-fg flex items-center justify-end gap-1">
+                      <span>VIEW ROLE</span>
+                      <span className="inline-block transition-transform duration-300 group-hover/card:translate-x-1">→</span>
                     </p>
                   </div>
                 </div>
@@ -304,13 +356,16 @@ const JobsSection = () => {
             ))}
           </div>
 
+          {/* Load More Button */}
           {displayCount < filteredJobs.length && (
             <div className="mt-10 flex justify-center">
               <button
                 onClick={loadMoreJobs}
-                className="inline-flex min-h-12 items-center gap-2 rounded-full border border-[#BFBFBF] dark:border-[#404040] px-7 py-3 text-sm font-semibold tracking-wide text-[#404040] dark:text-[#F2F2F2] hover:bg-[#0D0D0D]/10 dark:hover:bg-[#F2F2F2]/10 active:scale-95 transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0D0D0D] dark:focus-visible:ring-[#F2F2F2]"
+                className="group/btn relative inline-flex min-h-12 items-center gap-2 border border-[#0A0A0B] dark:border-[#ECECEC] bg-transparent px-7 py-3 font-mono text-xs uppercase font-bold tracking-wider text-fg hover:bg-[#0A0A0B] hover:text-[#ECECEC] dark:hover:bg-[#ECECEC] dark:hover:text-[#0A0A0B] transition-all duration-300 cursor-pointer"
               >
-                Load More Jobs <span aria-hidden>→</span>
+                <CornerAccents className="opacity-0 group-hover/btn:opacity-100" />
+                <span>LOAD MORE OPPORTUNITIES</span>
+                <span className="inline-block transition-transform duration-300 group-hover/btn:translate-x-1">→</span>
               </button>
             </div>
           )}

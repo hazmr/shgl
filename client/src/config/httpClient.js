@@ -5,10 +5,10 @@ import { API_BASE_URL } from "./api";
 /**
  * Default API Accept Header
  * This value is used for the Accept header in all API requests
- * Uses standard JSON media type for all API versions
+ * Follows the vendor-specific media type format: application/vnd.shglapp+json;v=1.0
  * Developers can override this in individual requests if needed
  */
-export const DEFAULT_ACCEPT_HEADER = "application/json";
+export const DEFAULT_ACCEPT_HEADER = "application/vnd.shglapp+json;v=1.0";
 
 /**
  * Create axios instance with default configuration
@@ -144,7 +144,7 @@ httpClient.interceptors.response.use(
 
       // Handle specific status codes
       switch (error.response.status) {
-        case 401:
+        case 401: {
           // Only redirect to login if this is NOT a login request
           // and we're NOT already on the login page
           const isLoginRequest = error.config.url.includes("/auth/login");
@@ -153,15 +153,16 @@ httpClient.interceptors.response.use(
           if (!isLoginRequest && !isOnLoginPage) {
             // Unauthorized - clear token and user data, then redirect to login
             localStorage.removeItem("authToken");
-            localStorage.removeItem("shglUser");
+            localStorage.removeItem("clientUser");
             window.location.href = "/login";
           } else {
             // If it's a login request or we're on login page, just clear token
             // but don't redirect (let the component handle the error)
             localStorage.removeItem("authToken");
-            localStorage.removeItem("shglUser");
+            localStorage.removeItem("clientUser");
           }
           break;
+        }
         case 403:
           console.error("Access forbidden");
           break;
@@ -196,15 +197,15 @@ httpClient.interceptors.response.use(
  * @example
  * // Use specific version (2.0)
  * const response = await httpClient.get('/companies', {
- *   headers: { 'Accept': 'application/json' }
+ *   headers: { 'Accept': 'application/vnd.shglapp+json;v=2.0' }
  * });
  *
  * @example
  * // Use withApiVersion helper
  * const response = await withApiVersion('2.0').get('/companies');
  */
-export const withApiVersion = (_version) => {
-  const acceptHeader = DEFAULT_ACCEPT_HEADER;
+export const withApiVersion = (version) => {
+  const acceptHeader = `application/vnd.shglapp+json;v=${version}`;
   return {
     get: (url, config = {}) =>
       httpClient.get(url, {

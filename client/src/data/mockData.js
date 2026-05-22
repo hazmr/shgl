@@ -1,4 +1,4 @@
-// Comprehensive mock data generator for the shgl
+// Comprehensive mock data generator for the client
 
 // Job titles by category
 const jobTitles = {

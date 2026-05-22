@@ -1,0 +1,149 @@
+@import "tailwindcss";
+
+/* Enable class-based dark mode for Tailwind v4 */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* WorldQuant Foundry Palette */
+  --color-surface: #ECECEC;    /* Neural Fog (Light mode bg) */
+  --color-fg: #0A0A0B;         /* Rich Carbon (Light mode text / Dark mode bg) */
+  --color-muted: #8C8C8E;      /* Medium Grey */
+  --color-secondary: #5C5C5E;  /* Secondary text / grey tags */
+  --color-elevated: #FFFFFF;   /* Elevated containers (white in light mode) */
+  --color-border: rgba(10, 10, 11, 0.1); /* Thin light mode gridlines */
+
+  /* Font definitions */
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Custom timings & easing */
+  --ease-foundry: cubic-bezier(0.2, 0, 0, 1);
+  --transition-duration: 400ms;
+}
+
+/* Base styles: Never pure white backgrounds */
+html,
+body,
+#root {
+  min-height: 100%;
+  background-color: #ECECEC;
+  color: #0A0A0B;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark theme style definitions */
+.dark html,
+html.dark,
+html.dark body,
+html.dark #root {
+  background-color: #0A0A0B;
+  color: #ECECEC;
+}
+
+/* Override variables in dark mode */
+html.dark {
+  --color-surface: #0A0A0B;
+  --color-fg: #ECECEC;
+  --color-elevated: #18181B; /* Urban Smoke elevated cards */
+  --color-border: rgba(236, 236, 236, 0.1); /* Thin dark mode gridlines */
+}
+
+/* Custom technical corner utility */
+.tech-container {
+  position: relative;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-elevated);
+  transition: all var(--transition-duration) var(--ease-foundry);
+}
+
+.tech-container:hover {
+  border-color: var(--color-fg);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+html.dark .tech-container:hover {
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Grid overlay background option */
+.grid-bg {
+  background-image: linear-gradient(var(--color-border) 1px, transparent 1px),
+                    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Text glitch/sliding animations for buttons and links */
+.sliding-text-btn {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sliding-text-span {
+  transition: transform var(--transition-duration) var(--ease-foundry);
+}
+
+.sliding-text-btn:hover .sliding-text-span-orig {
+  transform: translateY(-100%);
+}
+
+.sliding-text-btn:hover .sliding-text-span-hover {
+  transform: translateY(0);
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(10, 10, 11, 0.2);
+  border-radius: 4px;
+}
+html.dark ::-webkit-scrollbar-thumb {
+  background: rgba(236, 236, 236, 0.2);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted);
+}
+
+/* Selection aesthetics */
+::selection {
+  background: #0A0A0B;
+  color: #ECECEC;
+}
+html.dark ::selection {
+  background: #ECECEC;
+  color: #0A0A0B;
+}
+
+/* Monospace text classes */
+.font-p-mono {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Monospace Telemetry Blinking Cursor */
+.telemetry-cursor {
+  display: inline-block;
+  width: 6px;
+  height: 12px;
+  background-color: currentColor;
+  animation: blink-cursor 1s step-end infinite;
+}
+
+@keyframes blink-cursor {
+  from, to { opacity: 0 }
+  50% { opacity: 1 }
+}

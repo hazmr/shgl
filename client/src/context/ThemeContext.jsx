@@ -10,44 +10,41 @@ export const useTheme = () => {
   return context
 }
 
-/**
- * Light/Dark theme provider. Persists to localStorage and toggles the
- * `dark` class on <html> so Tailwind v4 `dark:` variants activate.
- */
 export const ThemeProvider = ({ children }) => {
-  const [isInitialized, setIsInitialized] = useState(false)
   const [theme, setTheme] = useState('light')
+  const [isInitialized, setIsInitialized] = useState(false)
 
   useEffect(() => {
-    let initial = 'light'
-    try {
-      const stored = localStorage.getItem('shgl-theme')
-      if (stored === 'dark' || stored === 'light') {
-        initial = stored
-      } else if (typeof window !== 'undefined' && window.matchMedia?.('(prefers-color-scheme: dark)').matches) {
-        initial = 'dark'
-      }
-    } catch (_) {
-      /* ignore storage errors */
-    }
-    setTheme(initial)
+    // Initialize theme from localStorage or default to light
+    const saved = localStorage.getItem('client-theme')
+    const initialTheme = saved === 'dark' ? 'dark' : 'light'
+    console.log('Initializing theme:', initialTheme)
+    setTheme(initialTheme)
     setIsInitialized(true)
   }, [])
 
   useEffect(() => {
     if (!isInitialized) return
+
     const root = document.documentElement
-    root.classList.toggle('dark', theme === 'dark')
-    root.classList.toggle('light', theme === 'light')
-    try {
-      localStorage.setItem('shgl-theme', theme)
-    } catch (_) {
-      /* ignore */
-    }
+    console.log('Applying theme:', theme)
+    
+    // Remove both classes first
+    root.classList.remove('light', 'dark')
+    
+    // Add the current theme class
+    root.classList.add(theme)
+    
+    // Save to localStorage
+    localStorage.setItem('client-theme', theme)
+    
+    console.log('DOM classes after update:', root.className)
   }, [theme, isInitialized])
 
   const toggleTheme = () => {
-    setTheme((t) => (t === 'dark' ? 'light' : 'dark'))
+    const newTheme = theme === 'light' ? 'dark' : 'light'
+    console.log('Toggling theme from', theme, 'to', newTheme)
+    setTheme(newTheme)
   }
 
   return (

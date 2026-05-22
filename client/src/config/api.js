@@ -5,19 +5,19 @@
 
 // Base URL for the backend API
 export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080/api";
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
 
 // API Version Configuration
 // Default version sent in Accept header for all REST API calls
-// Format: application/json
+// Format: application/vnd.shglapp+json;v=1.0
 export const DEFAULT_API_VERSION = "1.0";
 
 // Supported API versions
 export const SUPPORTED_API_VERSIONS = ["1.0", "2.0", "3.0"];
 
 // Helper to generate Accept header value for a specific version
-export const getAcceptHeader = (_version = DEFAULT_API_VERSION) =>
-  "application/json";
+export const getAcceptHeader = (version = DEFAULT_API_VERSION) =>
+  `application/vnd.shglapp+json;v=${version}`;
 
 // API Endpoints
 export const API_ENDPOINTS = {

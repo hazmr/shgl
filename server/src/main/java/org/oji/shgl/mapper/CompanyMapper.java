@@ -1,9 +1,11 @@
 package org.oji.shgl.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
 
+import org.oji.shgl.dto.CompanyRequestDto;
 import org.oji.shgl.dto.CompanyResponseDto;
 import org.oji.shgl.entity.Company;
 

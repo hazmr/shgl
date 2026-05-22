@@ -9,7 +9,7 @@ const DUMMY_USERS = {
   employers: [
     {
       id: 1,
-      email: 'employer@gmail.com',
+      email: 'employer@company.com',
       password: 'employer123',
       name: 'John Smith',
       company: 'Tech Solutions Inc.',
@@ -17,7 +17,7 @@ const DUMMY_USERS = {
     },
     {
       id: 2,
-      email: 'hr@gmail.com',
+      email: 'hr@startup.com',
       password: 'hr123',
       name: 'Sarah Johnson',
       company: 'Innovation Startup',
@@ -27,7 +27,7 @@ const DUMMY_USERS = {
   jobSeekers: [
     {
       id: 3,
-      email: 'jobseeker@gmail.com',
+      email: 'jobseeker@email.com',
       password: 'jobseeker123',
       name: 'Alex Brown',
       title: 'Software Developer',
@@ -64,7 +64,7 @@ const DUMMY_USERS = {
     },
     {
       id: 4,
-      email: 'candidate@gmail.com',
+      email: 'candidate@email.com',
       password: 'candidate123',
       name: 'Emma Davis',
       title: 'Product Manager',
@@ -116,7 +116,7 @@ export const AuthProvider = ({ children }) => {
 
   // Load user from localStorage on app start
   useEffect(() => {
-    const savedUser = localStorage.getItem('shglUser');
+    const savedUser = localStorage.getItem('clientUser');
     const savedToken = localStorage.getItem('authToken');
 
     if (savedUser && savedToken) {
@@ -127,7 +127,7 @@ export const AuthProvider = ({ children }) => {
         // This fixes old cached data from before the bug was fixed
         if (parsedUser.email && !parsedUser.email.includes('@')) {
           console.warn('[Auth] Detected invalid cached user data. Clearing localStorage...');
-          localStorage.removeItem('shglUser');
+          localStorage.removeItem('clientUser');
           localStorage.removeItem('authToken');
           setIsLoading(false);
           return;
@@ -136,7 +136,7 @@ export const AuthProvider = ({ children }) => {
         setUser(parsedUser);
       } catch (error) {
         console.error('Error loading saved user:', error);
-        localStorage.removeItem('shglUser');
+        localStorage.removeItem('clientUser');
         localStorage.removeItem('authToken');
       }
     }
@@ -146,9 +146,9 @@ export const AuthProvider = ({ children }) => {
   // Save user to localStorage whenever user changes
   useEffect(() => {
     if (user) {
-      localStorage.setItem('shglUser', JSON.stringify(user));
+      localStorage.setItem('clientUser', JSON.stringify(user));
     } else {
-      localStorage.removeItem('shglUser');
+      localStorage.removeItem('clientUser');
       localStorage.removeItem('authToken');
     }
   }, [user]);
@@ -396,7 +396,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     localStorage.removeItem('authToken');
-    localStorage.removeItem('shglUser');
+    localStorage.removeItem('clientUser');
   };
 
   const value = {
