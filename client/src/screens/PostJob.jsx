@@ -1,5 +1,7 @@
+"use client";
+
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
 import { useJobsData } from '../contexts/JobsDataContext';
 import httpClient from '../config/httpClient';
@@ -30,7 +32,7 @@ const PostJob = () => {
 
   const { user, isEmployer, isAuthenticated, isLoading: authLoading } = useAuth();
   const { forceRefresh } = useJobsData();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const jobTypes = ['Full-time', 'Part-time', 'Contract', 'Internship'];
   const workTypes = ['Remote', 'Hybrid', 'On-site'];
@@ -158,7 +160,7 @@ const PostJob = () => {
       // Force refresh the jobs cache so the new job appears immediately
       await forceRefresh();
 
-      navigate('/employer/jobs', {
+      router.push('/employer/jobs', {
         state: { message: 'Job posted successfully!', type: 'success' }
       });
     } catch (error) {
@@ -545,7 +547,7 @@ const PostJob = () => {
             <div>
               <button
                 type="button"
-                onClick={() => navigate(-1)}
+                onClick={() => router.push(-1)}
                
               >
                 Cancel

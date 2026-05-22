@@ -1,5 +1,8 @@
+"use client";
+
 import { useEffect, useMemo, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useCompanies } from "../contexts/CompaniesContext";
 import { useJobsData } from "../contexts/JobsDataContext";
 
@@ -130,7 +133,7 @@ const CompanyDetail = () => {
           <h2 className="text-2xl font-semibold text-[#0D0D0D] dark:text-[#F2F2F2]">Company Not Found</h2>
           <p className="mt-2 text-[#404040] dark:text-[#BFBFBF]">The requested company could not be located.</p>
           <Link
-            to="/companies"
+            href="/companies"
             className="mt-6 inline-flex min-h-11 items-center rounded-full bg-[#0D0D0D] px-6 text-sm font-medium text-[#F2F2F2] dark:bg-[#F2F2F2] dark:text-[#0D0D0D] hover:bg-[#0D0D0D]/90 dark:hover:bg-[#F2F2F2]/90 active:scale-95 transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)]"
           >
             Back to Companies <span aria-hidden>→</span>
@@ -150,9 +153,9 @@ const CompanyDetail = () => {
 
         <div className="relative">
           <nav className="flex flex-wrap items-center gap-2 text-xs text-[#8C8C8C]">
-            <Link to="/" className="hover:text-[#404040] dark:hover:text-[#BFBFBF] transition-colors duration-200">Home</Link>
+            <Link href="/" className="hover:text-[#404040] dark:hover:text-[#BFBFBF] transition-colors duration-200">Home</Link>
             <span>/</span>
-            <Link to="/companies" className="hover:text-[#404040] dark:hover:text-[#BFBFBF] transition-colors duration-200">Companies</Link>
+            <Link href="/companies" className="hover:text-[#404040] dark:hover:text-[#BFBFBF] transition-colors duration-200">Companies</Link>
             <span>/</span>
             <span className="text-[#404040] dark:text-[#BFBFBF]">{company.name}</span>
           </nav>
@@ -215,7 +218,7 @@ const CompanyDetail = () => {
 
             <aside className="rounded-3xl border border-[#BFBFBF]/60 dark:border-[#404040]/70 bg-[#F2F2F2]/80 dark:bg-[#0D0D0D]/60 p-6 backdrop-blur-sm">
               <Link
-                to={`/jobs?company=${encodeURIComponent(company.name)}`}
+                href={`/jobs?company=${encodeURIComponent(company.name)}`}
                 className="w-full inline-flex min-h-11 items-center justify-center rounded-full bg-[#0D0D0D] px-5 text-sm font-medium text-[#F2F2F2] dark:bg-[#F2F2F2] dark:text-[#0D0D0D] hover:bg-[#0D0D0D]/90 dark:hover:bg-[#F2F2F2]/90 active:scale-95 transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)]"
               >
                 View All Jobs
@@ -298,7 +301,7 @@ const CompanyDetail = () => {
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <h2 className="text-xl font-semibold text-[#0D0D0D] dark:text-[#F2F2F2]">Open Positions ({companyJobs.length})</h2>
                 <Link
-                  to={`/jobs?company=${encodeURIComponent(company.name)}`}
+                    href={`/jobs?company=${encodeURIComponent(company.name)}`}
                   className="inline-flex min-h-10 items-center rounded-full border border-[#BFBFBF] dark:border-[#404040] px-4 text-sm font-medium text-[#404040] dark:text-[#F2F2F2] hover:bg-[#0D0D0D]/10 dark:hover:bg-[#F2F2F2]/10 transition-all duration-300"
                 >
                   View All
@@ -313,7 +316,7 @@ const CompanyDetail = () => {
                 {paginatedJobs.map((job) => (
                   <Link
                     key={job.id}
-                    to={`/jobs/${job.id}`}
+                    href={`/jobs/${job.id}`}
                     className="block rounded-2xl border border-[#BFBFBF]/60 dark:border-[#404040]/70 bg-[#BFBFBF]/20 dark:bg-[#404040]/35 p-4 hover:shadow-sm transition-all duration-300"
                   >
                     <h3 className="text-base font-semibold text-[#0D0D0D] dark:text-[#F2F2F2]">{job.title}</h3>

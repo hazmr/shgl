@@ -1,5 +1,8 @@
+"use client";
+
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { useJobs } from '../context/JobContext';
 import { useAuth } from '../context/AuthContext';
 import { useJobsData } from '../contexts/JobsDataContext';
@@ -247,7 +250,7 @@ const JobApplicants = () => {
           <div>🚫</div>
           <h2>{!isAuthenticated ? 'Please Log In' : 'Access Denied'}</h2>
           <p>{!isAuthenticated ? 'You need to be logged in to view job applicants.' : 'This page is only available for employers.'}</p>
-          <Link to="/">
+          <Link href="/">
             Go Home
           </Link>
         </div>
@@ -273,7 +276,7 @@ const JobApplicants = () => {
           <div>❓</div>
           <h2>Job Not Found</h2>
           <p>The job you're looking for doesn't exist or you don't have permission to view it.</p>
-          <Link to="/employer/jobs">
+          <Link href="/employer/jobs">
             Back to My Jobs
           </Link>
         </div>
@@ -293,7 +296,7 @@ const JobApplicants = () => {
       <div>
         {/* Header */}
         <div>
-          <Link to="/employer/jobs">
+          <Link href="/employer/jobs">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
@@ -366,7 +369,7 @@ const JobApplicants = () => {
               Your job posting is live! Applications will appear here once candidates start applying for this position.
             </p>
             <Link
-              to={`/jobs/${job.id}`}
+              href={`/jobs/${job.id}`}
              
             >
               View Job Posting

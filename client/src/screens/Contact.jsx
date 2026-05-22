@@ -1,5 +1,7 @@
+"use client";
+
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { submitContactForm } from '../services/contactService';
 
 const fieldClassName =
@@ -21,7 +23,7 @@ const Contact = () => {
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState('');
 
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const userTypes = [
     { value: 'jobseeker', label: 'Job Seeker' },
@@ -277,7 +279,7 @@ const Contact = () => {
               <div className="mt-6 flex flex-col-reverse sm:flex-row gap-3 sm:justify-end">
                 <button
                   type="button"
-                  onClick={() => navigate('/')}
+                  onClick={() => router.push('/')}
                   className="inline-flex min-h-11 items-center justify-center rounded-full border border-[#BFBFBF] dark:border-[#404040] px-6 text-sm font-medium text-[#404040] dark:text-[#F2F2F2] hover:bg-[#0D0D0D]/10 dark:hover:bg-[#F2F2F2]/10 active:scale-95 transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0D0D0D] dark:focus-visible:ring-[#F2F2F2]"
                 >
                   Cancel

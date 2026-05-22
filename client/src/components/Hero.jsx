@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -29,7 +31,7 @@ const Hero = () => {
 
             <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-3">
               <Link
-                to="/jobs"
+                href="/jobs"
                 className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#0D0D0D] px-7 py-3 text-sm font-semibold tracking-wide text-[#F2F2F2] dark:bg-[#F2F2F2] dark:text-[#0D0D0D] shadow-sm hover:shadow-md hover:bg-[#0D0D0D]/90 dark:hover:bg-[#F2F2F2]/90 active:scale-95 transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0D0D0D] dark:focus-visible:ring-[#F2F2F2] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F2F2F2] dark:focus-visible:ring-offset-[#0D0D0D]"
               >
                 Explore Roles
@@ -37,7 +39,7 @@ const Hero = () => {
               </Link>
 
               <Link
-                to="/companies"
+                href="/companies"
                 className="inline-flex min-h-11 items-center justify-center rounded-full border border-[#BFBFBF] dark:border-[#404040] px-7 py-3 text-sm font-semibold tracking-wide text-[#404040] dark:text-[#F2F2F2] hover:bg-[#0D0D0D]/10 dark:hover:bg-[#F2F2F2]/10 active:scale-95 transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0D0D0D] dark:focus-visible:ring-[#F2F2F2]"
               >
                 Browse Teams

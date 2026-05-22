@@ -1,5 +1,8 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
 import { useJobs } from "../context/JobContext";
 import { useJobsData } from "../contexts/JobsDataContext";
 import { useAuth } from "../context/AuthContext";
@@ -7,7 +10,7 @@ import ConfirmationModal from "../components/ConfirmationModal";
 
 const JobDetail = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
+  const router = useRouter();
   const [job, setJob] = useState(null);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [notification, setNotification] = useState(null);
@@ -50,7 +53,7 @@ const JobDetail = () => {
 
   const handleApply = () => {
     if (!isAuthenticated) {
-      navigate("/login", { state: { from: { pathname: `/jobs/${id}` } } });
+      router.push("/login", { state: { from: { pathname: `/jobs/${id}` } } });
       return;
     }
 
@@ -69,7 +72,7 @@ const JobDetail = () => {
     } else if (result.requiresProfile) {
       showNotification(result.error, "error");
       setTimeout(() => {
-        navigate("/profile");
+        router.push("/profile");
       }, 2000);
     } else {
       showNotification(result.error, "error");
@@ -78,7 +81,7 @@ const JobDetail = () => {
 
   const handleSave = async () => {
     if (!isAuthenticated) {
-      navigate("/login", { state: { from: { pathname: `/jobs/${id}` } } });
+      router.push("/login", { state: { from: { pathname: `/jobs/${id}` } } });
       return;
     }
 
@@ -167,7 +170,7 @@ const JobDetail = () => {
           <h2 className="text-2xl font-semibold text-[#0D0D0D] dark:text-[#F2F2F2]">Job Not Found</h2>
           <p className="mt-2 text-[#404040] dark:text-[#BFBFBF]">The job you are looking for does not exist.</p>
           <Link
-            to="/jobs"
+            href="/jobs"
             className="mt-6 inline-flex min-h-11 items-center rounded-full bg-[#0D0D0D] px-6 text-sm font-medium text-[#F2F2F2] dark:bg-[#F2F2F2] dark:text-[#0D0D0D] hover:bg-[#0D0D0D]/90 dark:hover:bg-[#F2F2F2]/90 active:scale-95 transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)]"
           >
             Back to Jobs <span aria-hidden>→</span>
@@ -191,9 +194,9 @@ const JobDetail = () => {
 
         <div className="relative">
           <nav className="flex flex-wrap items-center gap-2 text-xs text-[#8C8C8C]">
-            <Link to="/" className="hover:text-[#404040] dark:hover:text-[#BFBFBF] transition-colors duration-200">Home</Link>
+            <Link href="/" className="hover:text-[#404040] dark:hover:text-[#BFBFBF] transition-colors duration-200">Home</Link>
             <span>/</span>
-            <Link to="/jobs" className="hover:text-[#404040] dark:hover:text-[#BFBFBF] transition-colors duration-200">Jobs</Link>
+            <Link href="/jobs" className="hover:text-[#404040] dark:hover:text-[#BFBFBF] transition-colors duration-200">Jobs</Link>
             <span>/</span>
             <span className="text-[#404040] dark:text-[#BFBFBF]">{job.title}</span>
           </nav>
@@ -419,7 +422,7 @@ const JobDetail = () => {
             </p>
 
             <Link
-              to={`/companies/${job.company
+                href={`/companies/${job.company
                 .toLowerCase()
                 .replace(/\s+/g, "-")
                 .replace(/[^a-z0-9-]/g, "")}`}

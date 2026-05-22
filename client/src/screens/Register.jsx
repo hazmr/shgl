@@ -1,5 +1,8 @@
+"use client";
+
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 
@@ -18,7 +21,7 @@ const Register = () => {
   
   const { register, isLoading } = useAuth();
   const { theme } = useTheme();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const validateForm = () => {
     const newErrors = {};
@@ -77,7 +80,7 @@ const Register = () => {
     const result = await register(formData);
 
     if (result.success) {
-      navigate('/login', {
+      router.push('/login', {
         replace: true,
         state: { message: result.message || 'Registration successful! Please login with your credentials.' }
       });
@@ -348,7 +351,7 @@ const Register = () => {
             <p className="text-center text-sm text-[#8C8C8C]">
               Already have an account?{' '}
               <Link
-                to="/login"
+                  href="/login"
                 className="font-semibold text-[#404040] hover:text-[#0D0D0D] transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-[#404040] rounded px-1 focus-visible:outline-none"
               >
                 Sign In

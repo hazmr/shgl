@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
 import { useAuth } from "../context/AuthContext";
 import Hero from "../components/Hero";
 import JobsSection from "../components/JobsSection";
@@ -30,7 +32,7 @@ const Home = () => {
                   </p>
                 </div>
                 <Link
-                  to="/profile"
+                  href="/profile"
                   className="inline-flex items-center justify-center px-6 py-3 bg-[#0D0D0D] text-[#F2F2F2] rounded-full font-medium text-sm whitespace-nowrap transition-all duration-300 hover:scale-[1.02] active:scale-95 focus-visible:ring-2 focus-visible:ring-[#404040] focus-visible:ring-offset-2 focus-visible:ring-offset-[#BFBFBF]"
                 >
                   Complete profile <span className="ml-2" aria-hidden>→</span>

@@ -1,5 +1,8 @@
+"use client";
+
 import { useState, useEffect, useRef } from "react";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 
@@ -14,13 +17,13 @@ const Navbar = () => {
 
   const { user, logout, isAuthenticated, isEmployer, isJobSeeker, isAdmin } = useAuth();
   const { theme, toggleTheme } = useTheme();
-  const location = useLocation();
-  const navigate = useNavigate();
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     setIsMenuOpen(false);
     setShowUserMenu(false);
-  }, [location.pathname]);
+  }, [pathname]);
 
   useEffect(() => {
     const onClick = (e) => {
@@ -35,11 +38,12 @@ const Navbar = () => {
   const handleLogout = () => {
     logout();
     setShowUserMenu(false);
-    navigate("/", { replace: true });
+    router.replace("/");
   };
 
-  const navLinkClass = ({ isActive }) =>
-    [
+  const navLinkClass = (href) => {
+    const isActive = pathname === href;
+    return [
       "relative inline-flex items-center h-11 px-5 rounded-full text-sm font-medium tracking-wide",
       "transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)]",
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0D0D0D] dark:focus-visible:ring-[#F2F2F2] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F2F2F2] dark:focus-visible:ring-offset-[#0D0D0D]",
@@ -47,6 +51,7 @@ const Navbar = () => {
         ? "bg-[#0D0D0D] text-[#F2F2F2] dark:bg-[#F2F2F2] dark:text-[#0D0D0D] shadow-sm"
         : "text-[#404040] dark:text-[#BFBFBF] hover:bg-[#0D0D0D]/10 dark:hover:bg-[#F2F2F2]/10 hover:text-[#0D0D0D] dark:hover:text-[#F2F2F2]",
     ].join(" ");
+  };
 
   const roleLabel = isAdmin ? "Admin" : isEmployer ? "Employer" : "Job Seeker";
 
@@ -55,7 +60,7 @@ const Navbar = () => {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-20 flex items-center gap-4">
         {/* Wordmark */}
         <Link
-          to="/"
+          href="/"
           className="flex items-center gap-2 rounded-full px-2 py-1 -ml-2 transition-colors duration-300 hover:bg-[#0D0D0D]/5 dark:hover:bg-[#F2F2F2]/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0D0D0D] dark:focus-visible:ring-[#F2F2F2]"
         >
           <img src="/black.png" alt="" aria-hidden="true" className="h-7 w-7 block dark:hidden" />
@@ -67,9 +72,9 @@ const Navbar = () => {
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-1 ml-6">
-          <NavLink to="/jobs" className={navLinkClass}>Jobs</NavLink>
-          <NavLink to="/companies" className={navLinkClass}>Companies</NavLink>
-          <NavLink to="/contact" className={navLinkClass}>Contact</NavLink>
+          <Link href="/jobs" className={navLinkClass("/jobs")}>Jobs</Link>
+          <Link href="/companies" className={navLinkClass("/companies")}>Companies</Link>
+          <Link href="/contact" className={navLinkClass("/contact")}>Contact</Link>
         </nav>
 
         <div className="flex-1" />
@@ -107,13 +112,13 @@ const Navbar = () => {
           {!isAuthenticated ? (
             <>
               <Link
-                to="/login"
+                href="/login"
                 className="inline-flex items-center h-11 px-5 rounded-full text-sm font-medium text-[#0D0D0D] dark:text-[#F2F2F2] hover:bg-[#0D0D0D]/10 dark:hover:bg-[#F2F2F2]/10 active:scale-95 transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0D0D0D] dark:focus-visible:ring-[#F2F2F2]"
               >
                 Sign in
               </Link>
               <Link
-                to="/register"
+                href="/register"
                 className="group inline-flex items-center gap-2 h-11 px-6 rounded-full text-sm font-medium bg-[#0D0D0D] text-[#F2F2F2] dark:bg-[#F2F2F2] dark:text-[#0D0D0D] shadow-sm hover:shadow-md hover:bg-[#0D0D0D]/90 dark:hover:bg-[#F2F2F2]/90 active:scale-95 transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0D0D0D] dark:focus-visible:ring-[#F2F2F2] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F2F2F2] dark:focus-visible:ring-offset-[#0D0D0D]"
               >
                 Register
@@ -148,23 +153,23 @@ const Navbar = () => {
                   <ul className="py-2">
                     {isJobSeeker && (
                       <>
-                        <MenuLink to="/profile">Profile</MenuLink>
-                        <MenuLink to="/applied-jobs">Applied jobs</MenuLink>
-                        <MenuLink to="/saved-jobs">Saved jobs</MenuLink>
+                        <MenuLink href="/profile">Profile</MenuLink>
+                        <MenuLink href="/applied-jobs">Applied jobs</MenuLink>
+                        <MenuLink href="/saved-jobs">Saved jobs</MenuLink>
                       </>
                     )}
                     {isEmployer && (
                       <>
-                        <MenuLink to="/post-job">Post a job</MenuLink>
-                        <MenuLink to="/employer/jobs">My jobs</MenuLink>
+                        <MenuLink href="/post-job">Post a job</MenuLink>
+                        <MenuLink href="/employer/jobs">My jobs</MenuLink>
                       </>
                     )}
                     {isAdmin && (
                       <>
-                        <MenuLink to="/admin">Dashboard</MenuLink>
-                        <MenuLink to="/admin/companies">Companies</MenuLink>
-                        <MenuLink to="/admin/employers">Employers</MenuLink>
-                        <MenuLink to="/admin/contact-messages">Messages</MenuLink>
+                        <MenuLink href="/admin">Dashboard</MenuLink>
+                        <MenuLink href="/admin/companies">Companies</MenuLink>
+                        <MenuLink href="/admin/employers">Employers</MenuLink>
+                        <MenuLink href="/admin/contact-messages">Messages</MenuLink>
                       </>
                     )}
                   </ul>
@@ -201,15 +206,15 @@ const Navbar = () => {
       {isMenuOpen && (
         <div className="md:hidden border-t border-[#BFBFBF]/40 dark:border-[#404040]/60 bg-[#F2F2F2]/95 dark:bg-[#0D0D0D]/95 backdrop-blur-md">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 py-4 flex flex-col gap-1">
-            <MobileLink to="/jobs">Jobs</MobileLink>
-            <MobileLink to="/companies">Companies</MobileLink>
-            <MobileLink to="/contact">Contact</MobileLink>
+            <MobileLink href="/jobs">Jobs</MobileLink>
+            <MobileLink href="/companies">Companies</MobileLink>
+            <MobileLink href="/contact">Contact</MobileLink>
             <hr className="my-3 border-[#BFBFBF]/40 dark:border-[#404040]/60" />
             {!isAuthenticated ? (
               <>
-                <MobileLink to="/login">Sign in</MobileLink>
+                <MobileLink href="/login">Sign in</MobileLink>
                 <Link
-                  to="/register"
+                  href="/register"
                   className="inline-flex items-center justify-center gap-2 h-12 px-6 mt-1 rounded-full text-sm font-medium bg-[#0D0D0D] text-[#F2F2F2] dark:bg-[#F2F2F2] dark:text-[#0D0D0D] shadow-sm active:scale-95 transition-all duration-300"
                 >
                   Register →
@@ -219,23 +224,23 @@ const Navbar = () => {
               <>
                 {isJobSeeker && (
                   <>
-                    <MobileLink to="/profile">Profile</MobileLink>
-                    <MobileLink to="/applied-jobs">Applied jobs</MobileLink>
-                    <MobileLink to="/saved-jobs">Saved jobs</MobileLink>
+                    <MobileLink href="/profile">Profile</MobileLink>
+                    <MobileLink href="/applied-jobs">Applied jobs</MobileLink>
+                    <MobileLink href="/saved-jobs">Saved jobs</MobileLink>
                   </>
                 )}
                 {isEmployer && (
                   <>
-                    <MobileLink to="/post-job">Post a job</MobileLink>
-                    <MobileLink to="/employer/jobs">My jobs</MobileLink>
+                    <MobileLink href="/post-job">Post a job</MobileLink>
+                    <MobileLink href="/employer/jobs">My jobs</MobileLink>
                   </>
                 )}
                 {isAdmin && (
                   <>
-                    <MobileLink to="/admin">Dashboard</MobileLink>
-                    <MobileLink to="/admin/companies">Companies</MobileLink>
-                    <MobileLink to="/admin/employers">Employers</MobileLink>
-                    <MobileLink to="/admin/contact-messages">Messages</MobileLink>
+                    <MobileLink href="/admin">Dashboard</MobileLink>
+                    <MobileLink href="/admin/companies">Companies</MobileLink>
+                    <MobileLink href="/admin/employers">Employers</MobileLink>
+                    <MobileLink href="/admin/contact-messages">Messages</MobileLink>
                   </>
                 )}
                 <button
@@ -253,10 +258,10 @@ const Navbar = () => {
   );
 };
 
-const MenuLink = ({ to, children }) => (
+const MenuLink = ({ href, children }) => (
   <li>
     <Link
-      to={to}
+      href={href}
       className="block px-5 py-2.5 text-sm text-[#404040] dark:text-[#BFBFBF] hover:bg-[#0D0D0D]/10 dark:hover:bg-[#F2F2F2]/10 hover:text-[#0D0D0D] dark:hover:text-[#F2F2F2] transition-colors duration-200"
     >
       {children}
@@ -264,9 +269,9 @@ const MenuLink = ({ to, children }) => (
   </li>
 );
 
-const MobileLink = ({ to, children }) => (
+const MobileLink = ({ href, children }) => (
   <Link
-    to={to}
+    href={href}
     className="inline-flex items-center h-12 px-5 rounded-full text-sm font-medium text-[#0D0D0D] dark:text-[#F2F2F2] hover:bg-[#0D0D0D]/10 dark:hover:bg-[#F2F2F2]/10 active:scale-95 transition-all duration-300"
   >
     {children}

@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { useTheme } from "../../context/ThemeContext";
 import httpClient from "../../config/httpClient";

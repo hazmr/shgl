@@ -1,5 +1,8 @@
+"use client";
+
 import { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 
@@ -15,19 +18,18 @@ const Login = () => {
 
   const { login, isLoading } = useAuth();
   const { theme } = useTheme();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const router = useRouter();
+  
 
-  const from = location.state?.from?.pathname || "/";
+  const searchParams = useSearchParams();
+  const from = searchParams.get("from") || "/";
 
   useEffect(() => {
-    if (location.state?.message) {
-      setSuccessMessage(location.state.message);
-      setTimeout(() => {
-        window.history.replaceState({}, document.title);
-      }, 100);
+    const message = searchParams.get("message");
+    if (message) {
+      setSuccessMessage(message);
     }
-  }, [location]);
+  }, [searchParams]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,7 +42,7 @@ const Login = () => {
     );
 
     if (result.success) {
-      navigate(from, { replace: true });
+      router.replace(from);
     } else {
       setError(result.error);
     }
@@ -273,7 +275,7 @@ const Login = () => {
             <p className="text-center text-sm text-[#8C8C8C]">
               Don't have an account?{" "}
               <Link
-                to="/register"
+                href="/register"
                 className="font-semibold text-[#404040] hover:text-[#0D0D0D] transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-[#404040] rounded px-1 focus-visible:outline-none"
               >
                 Create Account

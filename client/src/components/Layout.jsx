@@ -1,8 +1,9 @@
-import { Outlet } from 'react-router-dom'
+"use client";
+
 import Navbar from './Navbar'
 import Footer from './Footer'
 
-const Layout = () => {
+const Layout = ({ children }) => {
   return (
     <div className="relative min-h-screen bg-[#F2F2F2] text-[#0D0D0D] dark:bg-[#0D0D0D] dark:text-[#F2F2F2] transition-colors duration-300 ease-[cubic-bezier(0.2,0,0,1)]">
       {/* Atmospheric blur shapes — global ambient depth */}
@@ -14,7 +15,7 @@ const Layout = () => {
 
       <Navbar />
       <main className="relative">
-        <Outlet />
+        {children}
       </main>
       <Footer />
     </div>

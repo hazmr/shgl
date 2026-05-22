@@ -1,5 +1,7 @@
+"use client";
+
 import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { useCompanies } from "../contexts/CompaniesContext";
 import { useJobsData } from "../contexts/JobsDataContext";
 
@@ -326,7 +328,7 @@ const Companies = () => {
             {paginatedCompanies.map((company) => (
               <Link
                 key={company.name}
-                to={`/companies/${company.name
+                href={`/companies/${company.name
                   .toLowerCase()
                   .replace(/\s+/g, "-")
                   .replace(/[^a-z0-9-]/g, "")}`}

@@ -1,5 +1,7 @@
+"use client";
+
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { useJobs } from '../context/JobContext';
 import { useAuth } from '../context/AuthContext';
 
@@ -102,7 +104,7 @@ const SavedJobs = () => {
           <h2 className="text-2xl font-semibold text-[#0D0D0D] dark:text-[#F2F2F2]">{!isAuthenticated ? 'Please Log In' : 'Access Denied'}</h2>
           <p className="mt-2 text-[#404040] dark:text-[#BFBFBF]">{!isAuthenticated ? 'You need to be logged in to view your saved jobs.' : 'This page is only available for job seekers.'}</p>
           <Link
-            to="/"
+            href="/"
             className="mt-6 inline-flex min-h-11 items-center rounded-full bg-[#0D0D0D] px-6 text-sm font-medium text-[#F2F2F2] dark:bg-[#F2F2F2] dark:text-[#0D0D0D] hover:bg-[#0D0D0D]/90 dark:hover:bg-[#F2F2F2]/90 active:scale-95 transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)]"
           >
             Go Home
@@ -111,7 +113,7 @@ const SavedJobs = () => {
       </div>
     );
   }
-
+  o
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
       <section className="relative mx-auto max-w-7xl overflow-hidden rounded-[40px] border border-[#BFBFBF]/50 dark:border-[#404040]/70 bg-[#BFBFBF]/20 dark:bg-[#404040]/30 p-6 sm:p-8 lg:p-10 shadow-sm">
@@ -147,7 +149,7 @@ const SavedJobs = () => {
               <h3 className="text-xl font-semibold text-[#0D0D0D] dark:text-[#F2F2F2]">No Saved Jobs Yet</h3>
               <p className="mt-2 text-sm text-[#404040] dark:text-[#BFBFBF]">Save roles from listings to keep them handy for later review.</p>
               <Link
-                to="/jobs"
+                href="/jobs"
                 className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full bg-[#0D0D0D] px-6 text-sm font-medium text-[#F2F2F2] dark:bg-[#F2F2F2] dark:text-[#0D0D0D] hover:bg-[#0D0D0D]/90 dark:hover:bg-[#F2F2F2]/90 active:scale-95 transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)]"
               >
                 Browse Jobs
@@ -198,7 +200,7 @@ const SavedJobs = () => {
                             <div className="min-w-0 flex-1">
                               <div className="flex items-start gap-2">
                                 <Link
-                                  to={`/jobs/${job.id}`}
+                                    href={`/jobs/${job.id}`}
                                   className="truncate text-lg font-semibold text-[#0D0D0D] dark:text-[#F2F2F2] hover:underline"
                                 >
                                   {job.title}
@@ -271,7 +273,7 @@ const SavedJobs = () => {
                               {isJobApplied(job.id) ? 'Applied' : 'Quick Apply'}
                             </button>
                             <Link
-                              to={`/jobs/${job.id}`}
+                                href={`/jobs/${job.id}`}
                               className="inline-flex min-h-10 items-center rounded-full border border-[#BFBFBF] dark:border-[#404040] px-4 text-sm font-medium text-[#404040] dark:text-[#F2F2F2] hover:bg-[#0D0D0D]/10 dark:hover:bg-[#F2F2F2]/10 active:scale-95 transition-all duration-300"
                             >
                               View Details

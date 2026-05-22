@@ -1,5 +1,7 @@
+"use client";
+
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { useJobsData } from '../contexts/JobsDataContext';
@@ -223,7 +225,7 @@ const MyJobs = () => {
                 Start by posting your first job to attract talented candidates.
               </p>
               <Link
-                to="/employer/post-job"
+                href="/employer/post-job"
                
               >
                 Post a Job
@@ -366,14 +368,14 @@ const MyJobs = () => {
                       <td>
                         <div>
                           <Link
-                            to={`/job-applicants/${job.id}`}
+                            href={`/job-applicants/${job.id}`}
                            
                             title="View Applicants"
                           >
                             Applicants
                           </Link>
                           <Link
-                            to={`/jobs/${job.id}`}
+                              href={`/jobs/${job.id}`}
                            
                             title="View Job Details"
                           >

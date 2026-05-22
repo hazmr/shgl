@@ -1,11 +1,13 @@
+"use client";
+
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { getProfile, updateProfile as updateProfileApi, getProfilePictureUrl } from '../services/profileService';
 
 const Profile = () => {
   const { user, updateProfile, updateProfileComplete, isJobSeeker, isLoading: authLoading } = useAuth();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -35,7 +37,7 @@ const Profile = () => {
     if (authLoading) return;
 
     if (!isJobSeeker) {
-      navigate('/');
+      router.push('/');
       return;
     }
 

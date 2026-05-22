@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom';
+"use client";
+
+import Link from 'next/link';
 import { useTheme } from '../../context/ThemeContext';
 import { useCompanies } from '../../contexts/CompaniesContext';
 
@@ -83,7 +85,7 @@ const Dashboard = () => {
           {adminCards.map((card, index) => (
             <Link
               key={index}
-              to={card.link}
+              href={card.link}
              
             >
               <div>

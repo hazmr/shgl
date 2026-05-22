@@ -1,5 +1,7 @@
+"use client";
+
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { useJobs } from '../context/JobContext';
 import { useAuth } from '../context/AuthContext';
 import ConfirmationModal from '../components/ConfirmationModal';
@@ -133,7 +135,7 @@ const AppliedJobs = () => {
               : 'This page is only available for job seekers.'}
           </p>
           <Link
-            to="/"
+            href="/"
             className="mt-6 inline-flex min-h-11 items-center rounded-full bg-[#0D0D0D] px-6 text-sm font-medium text-[#F2F2F2] dark:bg-[#F2F2F2] dark:text-[#0D0D0D] hover:bg-[#0D0D0D]/90 dark:hover:bg-[#F2F2F2]/90 active:scale-95 transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)]"
           >
             Back to Home
@@ -189,8 +191,7 @@ const AppliedJobs = () => {
               <p className="mt-2 text-sm text-[#404040] dark:text-[#BFBFBF]">
                 You have not applied for any jobs yet. Start browsing and find your next role.
               </p>
-              <Link
-                to="/jobs"
+              <Link href="/jobs"
                 className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full bg-[#0D0D0D] px-6 text-sm font-medium text-[#F2F2F2] dark:bg-[#F2F2F2] dark:text-[#0D0D0D] hover:bg-[#0D0D0D]/90 dark:hover:bg-[#F2F2F2]/90 active:scale-95 transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)]"
               >
                 Browse Jobs
@@ -243,7 +244,7 @@ const AppliedJobs = () => {
                             <div className="min-w-0 flex-1">
                               <div className="flex flex-wrap items-center gap-2">
                                 <Link
-                                  to={`/jobs/${job.id}`}
+                                    href={`/jobs/${job.id}`}
                                   className="truncate text-lg font-semibold text-[#0D0D0D] dark:text-[#F2F2F2] hover:underline"
                                 >
                                   {job.title}
@@ -292,7 +293,7 @@ const AppliedJobs = () => {
                           </p>
                           <div className="mt-3 flex flex-wrap gap-2 lg:justify-end">
                             <Link
-                              to={`/jobs/${job.id}`}
+                                href={`/jobs/${job.id}`}
                               className="inline-flex min-h-10 items-center rounded-full border border-[#BFBFBF] dark:border-[#404040] px-4 text-sm font-medium text-[#404040] dark:text-[#F2F2F2] hover:bg-[#0D0D0D]/10 dark:hover:bg-[#F2F2F2]/10 active:scale-95 transition-all duration-300"
                             >
                               View Job

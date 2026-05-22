@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
 import { useCompanies } from "../contexts/CompaniesContext";
 import { useJobsData } from "../contexts/JobsDataContext";
 
@@ -84,7 +86,7 @@ const CompaniesSection = () => {
               {companiesWithJobCounts.map((company) => (
                 <Link
                   key={company.name}
-                  to={`/companies/${company.name
+                  href={`/companies/${company.name
                     .toLowerCase()
                     .replace(/\s+/g, "-")
                     .replace(/[^a-z0-9-]/g, "")}`}
@@ -156,7 +158,7 @@ const CompaniesSection = () => {
 
           <div className="mt-10 flex justify-center">
             <Link
-              to="/companies"
+                href="/companies"
               className="inline-flex min-h-12 items-center gap-2 rounded-full border border-[#BFBFBF] dark:border-[#404040] px-7 py-3 text-sm font-semibold tracking-wide text-[#404040] dark:text-[#F2F2F2] hover:bg-[#0D0D0D]/10 dark:hover:bg-[#F2F2F2]/10 active:scale-95 transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0D0D0D] dark:focus-visible:ring-[#F2F2F2]"
             >
               View All Companies ({techCompanies.length}) <span aria-hidden>→</span>

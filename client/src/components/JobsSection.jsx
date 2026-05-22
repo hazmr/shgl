@@ -1,5 +1,7 @@
+"use client";
+
 import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { useJobsData } from "../contexts/JobsDataContext";
 
 const CATEGORIES = [
@@ -99,6 +101,14 @@ const JobsSection = () => {
     }
 
     return `${Math.floor(diffInHours / 24)}d ago`;
+  };
+
+  const resolveLogo = (logo) => {
+    if (!logo) return "";
+    if (logo.startsWith("http://") || logo.startsWith("https://") || logo.startsWith("/")) {
+      return logo;
+    }
+    return `/${logo}`;
   };
 
   const getCompanyMonogram = (name = "") => {
@@ -215,14 +225,33 @@ const JobsSection = () => {
             {displayedJobs.map((job) => (
               <Link
                 key={job.id}
-                to={`/jobs/${job.id}`}
+                href={`/jobs/${job.id}`}
                 className="group rounded-3xl border border-[#BFBFBF]/60 dark:border-[#404040]/70 bg-[#F2F2F2]/80 dark:bg-white/5 p-6 shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-[0.99] backdrop-blur-sm transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0D0D0D] dark:focus-visible:ring-[#F2F2F2]"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-start gap-3 min-w-0">
-                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#BFBFBF]/45 dark:bg-[#404040]/75 text-sm font-semibold text-[#0D0D0D] dark:text-[#F2F2F2]">
-                      {getCompanyMonogram(job.company || "Tech")}
-                    </span>
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-[#BFBFBF]/45 dark:bg-[#404040]/75">
+                      {job.companyLogo ? (
+                        <>
+                          <img
+                            src={resolveLogo(job.companyLogo)}
+                            alt={`${job.company} logo`}
+                            className="h-full w-full object-cover"
+                            onError={(e) => {
+                              e.currentTarget.style.display = "none";
+                              e.currentTarget.nextSibling.style.display = "flex";
+                            }}
+                          />
+                          <span className="hidden h-full w-full items-center justify-center text-sm font-semibold text-[#0D0D0D] dark:text-[#F2F2F2]">
+                            {getCompanyMonogram(job.company || "Tech")}
+                          </span>
+                        </>
+                      ) : (
+                        <span className="flex h-full w-full items-center justify-center text-sm font-semibold text-[#0D0D0D] dark:text-[#F2F2F2]">
+                          {getCompanyMonogram(job.company || "Tech")}
+                        </span>
+                      )}
+                    </div>
                     <div className="min-w-0">
                       <h3 className="truncate text-lg font-semibold text-[#0D0D0D] dark:text-[#F2F2F2]">
                         {job.title}
