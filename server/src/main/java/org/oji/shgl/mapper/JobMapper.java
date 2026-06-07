@@ -13,7 +13,4 @@ public interface JobMapper {
     @Mapping(source = "company.id", target = "companyId")
     @Mapping(source = "company.logo", target = "companyLogo")
     JobDto toDto(Job job);
-
-//    @Mapping(source = "companyId", target = "company.id")
-//    Job toEntity(JobDto jobDto);
 }
